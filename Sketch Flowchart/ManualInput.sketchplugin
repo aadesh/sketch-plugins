@@ -1,0 +1,50 @@
+// Sketch Plugin: AEFlowchart - "Manual Input" (ctrl shift m)
+// Source: github.com/tadija/AEFlowchart
+// Version: 1.0
+
+@import 'AEFlowchart.js'
+
+var stepName = "Manual Input";
+
+/*  call AEFlowchart main function with custom name and shape function  */
+createStep(stepName, manualInputShape);
+
+/*  draw Manual Input shape for given label  */
+function manualInputShape(label)
+{
+  // get label size
+  var labelFrame = [label frame];
+  var labelWidth = [labelFrame width];
+  var labelHeight = [labelFrame height];
+
+  // set shape padding
+  var minPadding = 12.0;
+  var maxPadding = 24.0;
+  // horizontal
+  var shapeHorizontalPadding = labelWidth * 0.3;
+  if(shapeHorizontalPadding < minPadding) shapeHorizontalPadding = minPadding;
+  if(shapeHorizontalPadding > maxPadding) shapeHorizontalPadding = maxPadding;
+  // vertical
+  var shapeVerticalPadding = 12.0;
+
+  // create shape path
+  var shapePath = [NSBezierPath bezierPath];
+  [shapePath moveToPoint:CGPointMake([labelFrame minX] - shapeHorizontalPadding, [labelFrame minY] - shapeVerticalPadding)];
+  [shapePath lineToPoint:CGPointMake([labelFrame maxX] + shapeHorizontalPadding, [labelFrame minY] - shapeVerticalPadding * 3)];
+  [shapePath lineToPoint:CGPointMake([labelFrame maxX] + shapeHorizontalPadding, [labelFrame maxY] + shapeVerticalPadding * 2))];
+  [shapePath lineToPoint:CGPointMake([labelFrame minX] - shapeHorizontalPadding, [labelFrame maxY] + shapeVerticalPadding * 2))];
+  [shapePath closePath];
+
+  // create shape
+  var shape = [MSShapeGroup shapeWithBezierPath: shapePath];
+
+  // set style
+  styleType = "layerStyles";
+
+  if(doesStyleExist(stepName, shape, styleType) == false) {
+    // log(stepName + " style doesn't exist so create it");
+    createLayerStyle(stepName, shape, manualInputColor, manualInputInnerShadows)
+  }
+
+  return shape;
+}

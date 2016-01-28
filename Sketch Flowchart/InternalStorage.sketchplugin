@@ -1,0 +1,95 @@
+// Sketch Plugin: AEFlowchart - "Internal Storage" (ctrl shift i)
+// Source: github.com/tadija/AEFlowchart
+// Version: 1.0
+
+@import 'AEFlowchart.js'
+ 
+var stepName = "Internal Storage";
+
+/*  call AEFlowchart main function with custom name and shape function  */
+createStep(stepName, internalStorageShape);
+
+/*  draw internalStorage rectangle shape for given label  */
+function internalStorageShape(label)
+{
+  // create group shape
+  var parentGroup = [label parentGroup];
+  var subGroup = parentGroup.addLayerOfType("group");
+ 
+  var labelFrame = [label frame];
+  var subGroupFrame = [subGroup frame];
+  [subGroupFrame setWidth:[labelFrame width] + 50];
+  [subGroupFrame setHeight:[labelFrame height] + 30];
+  [subGroupFrame setMidX:[labelFrame midX] - 5];
+  [subGroupFrame setMidY:[labelFrame midY] - 5];
+  [subGroup setFrame: subGroupFrame];
+
+  // create background box and offset it down and right 
+  var shape = [[MSRectangleShape alloc] init];
+  shape.setName("Background Box");
+  var shapeGroup = MSShapeGroup.shapeWithPath(shape);
+  [subGroup addLayers:[shapeGroup]];
+
+  // set frame
+  var subGroupFrame = [subGroup frame];
+  var shapeFrame = [shape frame];
+  [shapeFrame setX:[0]];
+  [shapeFrame setY:[0]];
+  [shapeFrame setWidth:[subGroupFrame width]];
+  [shapeFrame setHeight:[subGroupFrame height]];
+  [shapeGroup setFrame: shapeFrame];
+
+  // Style Setup
+  styleType = "layerStyles";
+
+  // set style Background Box Shape
+  if(doesStyleExist(stepName, shapeGroup, styleType) == false) {
+    // log(stepName + " style doesn't exist so create it");
+    createLayerStyle(stepName, shapeGroup, internalStorageColor, internalStorageInnerShadows)
+  }
+
+  // add Horizontal Line Box
+  var horizBox = [[MSRectangleShape alloc] init];
+  horizBox.setName("Horizontal Box");
+  var horizBoxGroup = MSShapeGroup.shapeWithPath(horizBox);
+  [subGroup addLayers:[horizBoxGroup]];
+
+  // set Frame
+  var horizBoxFrame = [horizBox frame];
+  [horizBoxFrame setX:0];
+  [horizBoxFrame setY:5]; // should be 10 but it's offset for some reason
+  [horizBoxFrame setWidth:[subGroupFrame width]];
+  [horizBoxFrame setHeight: 1];
+  [horizBoxGroup setFrame: horizBoxFrame];
+
+  var stepNameLine = stepName + " Line";
+
+  // set style Horizontal Box
+  if(doesStyleExist(stepNameLine, horizBoxGroup, styleType) == false) {
+    // log(stepName + " style doesn't exist so create it");
+    createLayerStyle(stepNameLine, horizBoxGroup, internalStorageLineColor, internalStorageInnerShadows)
+  }
+
+  // add Vertical Line Box
+  var vertBox = [[MSRectangleShape alloc] init];
+  vertBox.setName("Vertical Box");
+  var vertBoxGroup = MSShapeGroup.shapeWithPath(vertBox);
+  [subGroup addLayers:[vertBoxGroup]];
+
+  // set Frame
+  var vertBoxFrame = [vertBox frame];
+  [vertBoxFrame setX:5]; // should be 10 but it's offset for some reason
+  [vertBoxFrame setY:0];
+  [vertBoxFrame setWidth:1];
+  [vertBoxFrame setHeight:[subGroupFrame height]];
+  [vertBoxGroup setFrame: vertBoxFrame];
+
+  // set style Vertical Box
+  if(doesStyleExist(stepNameLine, vertBoxGroup, styleType) == false) {
+    // log(stepName + " style doesn't exist so create it");
+    createLayerStyle(stepNameLine, vertBoxGroup, internalStorageLineColor, internalStorageInnerShadows)
+  }
+
+  return subGroup;
+
+}

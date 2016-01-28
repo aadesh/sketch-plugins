@@ -1,0 +1,39 @@
+// Sketch Plugin: AEFlowchart - "Label Line" (ctrl shift l)
+// Source: github.com/tadija/AEFlowchart
+// Version: 1.0
+
+@import 'AEFlowchart.js'
+
+var stepName = "Label Line";
+
+/*  call AEFlowchart main function with custom name and shape function  */
+createStep(stepName, labelLineShape, labelLineFontColor, labelLineConvertCase);
+
+/*  draw Label Background rectangle shape for given label  */
+function labelLineShape(label)
+{
+  // create shape
+  var parentGroup = [label parentGroup];
+  var shape = [[MSRectangleShape alloc] init];
+  var shapeGroup = MSShapeGroup.shapeWithPath(shape);
+  [parentGroup addLayers:[shapeGroup]];
+
+  // set frame
+  var labelFrame = [label frame];
+  var shapeFrame = [shape frame];
+  [shapeFrame setWidth:[labelFrame width] + 2];
+  [shapeFrame setHeight:[labelFrame height] + 2];
+  [shapeFrame setMidX:[labelFrame midX]];
+  [shapeFrame setMidY:[labelFrame midY]];
+  [shapeGroup setFrame: shapeFrame];
+
+  // set style
+  styleType = "layerStyles";
+  
+  if(doesStyleExist(stepName, shapeGroup, styleType) == false) {
+    // log(stepName + " style doesn't exist so create it");
+    createLayerStyle(stepName, shapeGroup, labelLineColor, labelLineInnerShadows)
+  }
+
+  return shapeGroup;
+}
